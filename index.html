@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Marketing CRM</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #222;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 18px 25px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 62px);
+    }
+
+    .sidebar {
+      width: 230px;
+      background: white;
+      border-right: 1px solid #ddd;
+      padding: 20px 10px;
+    }
+
+    .menu {
+      display: block;
+      width: 100%;
+      padding: 13px 15px;
+      margin-bottom: 6px;
+      border: none;
+      background: transparent;
+      text-align: left;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .menu:hover {
+      background: #eef2ff;
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      margin-bottom: 25px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .card-title {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .card-number {
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      padding: 13px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      background: #f3f4f6;
+    }
+
+    .loading {
+      margin-top: 20px;
+      color: #666;
+    }
+
+    @media (max-width: 900px) {
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .sidebar {
+        width: 180px;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    Marketing CRM — Admin Panel
+  </div>
+
+  <div class="layout">
+
+    <aside class="sidebar">
+
+      <button class="menu" onclick="showSection('dashboard')">
+        📊 Dashboard
+      </button>
+
+      <button class="menu" onclick="showSection('customers')">
+        👥 Customers
+      </button>
+
+      <button class="menu" onclick="showSection('executives')">
+        👨‍💼 Executives
+      </button>
+
+      <button class="menu" onclick="showSection('calls')">
+        📞 Call History
+      </button>
+
+      <button class="menu" onclick="showSection('followups')">
+        📅 Follow Ups
+      </button>
+
+      <button class="menu" onclick="showSection('recordings')">
+        🎙️ Recordings
+      </button>
+
+    </aside>
+
+
+    <main class="content">
+
+
+      <!-- DASHBOARD -->
+
+      <section id="dashboard" class="section active">
+
+        <h1 class="page-title">
+          Dashboard
+        </h1>
+
+        <div class="cards">
+
+          <div class="card">
+            <div class="card-title">
+              Total Customers
+            </div>
+
+            <div class="card-number" id="customerCount">
+              0
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-title">
+              Executives
+            </div>
+
+            <div class="card-number" id="executiveCount">
+              0
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-title">
+              Total Calls
+            </div>
+
+            <div class="card-number" id="callCount">
+              0
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-title">
+              Follow Ups
+            </div>
+
+            <div class="card-number" id="followupCount">
+              0
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- CUSTOMERS -->
+
+      <section id="customers" class="section">
+
+        <h1 class="page-title">
+          Customers
+        </h1>
+
+        <div id="customersData" class="loading">
+          Loading customers...
+        </div>
+
+      </section>
+
+
+      <!-- EXECUTIVES -->
+
+      <section id="executives" class="section">
+
+        <h1 class="page-title">
+          Executives
+        </h1>
+
+        <div id="executivesData" class="loading">
+          Loading executives...
+        </div>
+
+      </section>
+
+
+      <!-- CALL HISTORY -->
+
+      <section id="calls" class="section">
+
+        <h1 class="page-title">
+          Call History
+        </h1>
+
+        <div id="callsData" class="loading">
+          Loading call history...
+        </div>
+
+      </section>
+
+
+      <!-- FOLLOW UPS -->
+
+      <section id="followups" class="section">
+
+        <h1 class="page-title">
+          Follow Ups
+        </h1>
+
+        <div id="followupsData" class="loading">
+          Loading follow ups...
+        </div>
+
+      </section>
+
+
+      <!-- RECORDINGS -->
+
+      <section id="recordings" class="section">
+
+        <h1 class="page-title">
+          Recordings
+        </h1>
+
+        <p>
+          Call recordings will appear here after cloud calling is connected.
+        </p>
+
+      </section>
+
+
+    </main>
+
+  </div>
+
+
+  <script>
+
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbz9hOyKP5g3zgehyMXWLh_49PyKyv8GSYaCKaNIwGgxHsXx4EOgXbPazcKcqYn9weHI/exec";
+
+
+    function showSection(sectionId) {
+
+      document.querySelectorAll(".section")
+        .forEach(function(section) {
+
+          section.classList.remove("active");
+
+        });
+
+
+      document.getElementById(sectionId)
+        .classList.add("active");
+
+
+      if (sectionId === "customers") {
+        loadCustomers();
+      }
+
+      if (sectionId === "executives") {
+        loadExecutives();
+      }
+
+      if (sectionId === "calls") {
+        loadCalls();
+      }
+
+      if (sectionId === "followups") {
+        loadFollowUps();
+      }
+
+    }
+
+
+    async function getData(action) {
+
+      const response =
+        await fetch(API_URL + "?action=" + action);
+
+      return await response.json();
+
+    }
+
+
+    async function loadCustomers() {
+
+      const box =
+        document.getElementById("customersData");
+
+      box.innerHTML = "Loading customers...";
+
+
+      try {
+
+        const result =
+          await getData("customers");
+
+
+        if (!result.success) {
+
+          box.innerHTML =
+            "Error: " + result.message;
+
+          return;
+
+        }
+
+
+        if (result.data.length === 0) {
+
+          box.innerHTML =
+            "<p>No customers found.</p>";
+
+          return;
+
+        }
+
+
+        box.innerHTML =
+          createTable(result.data);
+
+      } catch (error) {
+
+        box.innerHTML =
+          "Connection error.";
+
+      }
+
+    }
+
+
+    async function loadExecutives() {
+
+      const box =
+        document.getElementById("executivesData");
+
+      box.innerHTML =
+        "Loading executives...";
+
+
+      try {
+
+        const result =
+          await getData("executives");
+
+
+        if (!result.success) {
+
+          box.innerHTML =
+            "Error: " + result.message;
+
+          return;
+
+        }
+
+
+        if (result.data.length === 0) {
+
+          box.innerHTML =
+            "<p>No executives found.</p>";
+
+          return;
+
+        }
+
+
+        box.innerHTML =
+          createTable(result.data);
+
+      } catch (error) {
+
+        box.innerHTML =
+          "Connection error.";
+
+      }
+
+    }
+
+
+    async function loadCalls() {
+
+      const box =
+        document.getElementById("callsData");
+
+      box.innerHTML =
+        "Loading call history...";
+
+
+      try {
+
+        const result =
+          await getData("calls");
+
+
+        if (!result.success) {
+
+          box.innerHTML =
+            "Error: " + result.message;
+
+          return;
+
+        }
+
+
+        if (result.data.length === 0) {
+
+          box.innerHTML =
+            "<p>No calls found.</p>";
+
+          return;
+
+        }
+
+
+        box.innerHTML =
+          createTable(result.data);
+
+      } catch (error) {
+
+        box.innerHTML =
+          "Connection error.";
+
+      }
+
+    }
+
+
+    async function loadFollowUps() {
+
+      const box =
+        document.getElementById("followupsData");
+
+      box.innerHTML =
+        "Loading follow ups...";
+
+
+      try {
+
+        const result =
+          await getData("followups");
+
+
+        if (!result.success) {
+
+          box.innerHTML =
+            "Error: " + result.message;
+
+          return;
+
+        }
+
+
+        if (result.data.length === 0) {
+
+          box.innerHTML =
+            "<p>No follow ups found.</p>";
+
+          return;
+
+        }
+
+
+        box.innerHTML =
+          createTable(result.data);
+
+      } catch (error) {
+
+        box.innerHTML =
+          "Connection error.";
+
+      }
+
+    }
+
+
+    function createTable(data) {
+
+      if (!data.length) {
+        return "<p>No data found.</p>";
+      }
+
+
+      const headers =
+        Object.keys(data[0]);
+
+
+      let html =
+        "<table><thead><tr>";
+
+
+      headers.forEach(function(header) {
+
+        html +=
+          "<th>" + escapeHtml(header) + "</th>";
+
+      });
+
+
+      html +=
+        "</tr></thead><tbody>";
+
+
+      data.forEach(function(row) {
+
+        html += "<tr>";
+
+
+        headers.forEach(function(header) {
+
+          html +=
+            "<td>" +
+            escapeHtml(row[header]) +
+            "</td>";
+
+        });
+
+
+        html += "</tr>";
+
+      });
+
+
+      html +=
+        "</tbody></table>";
+
+
+      return html;
+
+    }
+
+
+    function escapeHtml(value) {
+
+      if (value === null || value === undefined) {
+        return "";
+      }
+
+
+      return String(value)
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    async function loadDashboard() {
+
+      try {
+
+        const customers =
+          await getData("customers");
+
+        const executives =
+          await getData("executives");
+
+        const calls =
+          await getData("calls");
+
+        const followups =
+          await getData("followups");
+
+
+        if (customers.success) {
+
+          document.getElementById(
+            "customerCount"
+          ).textContent =
+            customers.data.length;
+
+        }
+
+
+        if (executives.success) {
+
+          document.getElementById(
+            "executiveCount"
+          ).textContent =
+            executives.data.length;
+
+        }
+
+
+        if (calls.success) {
+
+          document.getElementById(
+            "callCount"
+          ).textContent =
+            calls.data.length;
+
+        }
+
+
+        if (followups.success) {
+
+          document.getElementById(
+            "followupCount"
+          ).textContent =
+            followups.data.length;
+
+        }
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+
+    }
+
+
+    loadDashboard();
+
+  </script>
+
+</body>
+</html>
