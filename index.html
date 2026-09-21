@@ -98,22 +98,89 @@
       display: block;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .primary-btn {
+      background: #111827;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .primary-btn:hover {
+      background: #1f2937;
+    }
+
+    .form-box {
+      display: none;
       background: white;
-      margin-top: 20px;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
-    th,
-    td {
-      padding: 13px;
-      border-bottom: 1px solid #eee;
-      text-align: left;
+    .form-box h2 {
+      margin-bottom: 20px;
     }
 
-    th {
-      background: #f3f4f6;
+    .form-grid {
+      display: grid;
+      gap: 15px;
+      max-width: 700px;
+    }
+
+    .form-grid input,
+    .form-grid select,
+    .form-grid textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 7px;
+      font-size: 15px;
+    }
+
+    .form-grid textarea {
+      resize: vertical;
+    }
+
+    .form-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .save-btn {
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .cancel-btn {
+      background: #e5e7eb;
+      color: #111827;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .message {
+      font-size: 14px;
+      min-height: 20px;
     }
 
     .loading {
@@ -121,20 +188,58 @@
       color: #666;
     }
 
-    @media (max-width: 900px) {
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
 
+    th,
+    td {
+      padding: 13px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+
+    .empty {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .status {
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: #eef2ff;
+      font-size: 12px;
+    }
+
+    @media (max-width: 900px) {
       .cards {
         grid-template-columns: repeat(2, 1fr);
       }
 
       .sidebar {
-        width: 180px;
+        width: 190px;
       }
 
+      .topbar {
+        align-items: flex-start;
+      }
     }
 
     @media (max-width: 600px) {
-
       .layout {
         flex-direction: column;
       }
@@ -151,17 +256,35 @@
         padding: 20px;
       }
 
+      .topbar {
+        flex-direction: column;
+      }
+
+      .primary-btn {
+        width: 100%;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
     }
   </style>
 </head>
 
 <body>
 
+  <!-- HEADER -->
+
   <div class="header">
     Marketing CRM — Admin Panel
   </div>
 
+
   <div class="layout">
+
+    <!-- SIDEBAR -->
 
     <aside class="sidebar">
 
@@ -191,6 +314,8 @@
 
     </aside>
 
+
+    <!-- CONTENT -->
 
     <main class="content">
 
@@ -257,11 +382,130 @@
 
       <section id="customers" class="section">
 
-        <h1 class="page-title">
-          Customers
-        </h1>
+        <div class="topbar">
 
-        <div id="customersData" class="loading">
+          <h1 class="page-title" style="margin-bottom:0;">
+            Customers
+          </h1>
+
+          <button
+            class="primary-btn"
+            onclick="openCustomerForm()"
+          >
+            + Add Customer
+          </button>
+
+        </div>
+
+
+        <!-- CUSTOMER FORM -->
+
+        <div
+          id="customerForm"
+          class="form-box"
+        >
+
+          <h2>
+            Add Customer
+          </h2>
+
+
+          <div class="form-grid">
+
+            <input
+              id="customerName"
+              type="text"
+              placeholder="Customer Name *"
+            >
+
+
+            <input
+              id="customerMobile"
+              type="tel"
+              placeholder="Mobile Number *"
+            >
+
+
+            <input
+              id="customerCity"
+              type="text"
+              placeholder="City"
+            >
+
+
+            <select id="customerStatus">
+
+              <option value="New">
+                New
+              </option>
+
+              <option value="Contacted">
+                Contacted
+              </option>
+
+              <option value="Interested">
+                Interested
+              </option>
+
+              <option value="Not Interested">
+                Not Interested
+              </option>
+
+              <option value="Converted">
+                Converted
+              </option>
+
+            </select>
+
+
+            <input
+              id="customerExecutive"
+              type="text"
+              placeholder="Assigned Executive"
+            >
+
+
+            <textarea
+              id="customerNotes"
+              rows="4"
+              placeholder="Notes"
+            ></textarea>
+
+
+            <div class="form-buttons">
+
+              <button
+                class="save-btn"
+                onclick="saveCustomer()"
+              >
+                Save Customer
+              </button>
+
+
+              <button
+                class="cancel-btn"
+                onclick="closeCustomerForm()"
+              >
+                Cancel
+              </button>
+
+            </div>
+
+
+            <div
+              id="customerMessage"
+              class="message"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="customersData"
+          class="loading"
+        >
           Loading customers...
         </div>
 
@@ -276,7 +520,10 @@
           Executives
         </h1>
 
-        <div id="executivesData" class="loading">
+        <div
+          id="executivesData"
+          class="loading"
+        >
           Loading executives...
         </div>
 
@@ -291,7 +538,10 @@
           Call History
         </h1>
 
-        <div id="callsData" class="loading">
+        <div
+          id="callsData"
+          class="loading"
+        >
           Loading call history...
         </div>
 
@@ -306,7 +556,10 @@
           Follow Ups
         </h1>
 
-        <div id="followupsData" class="loading">
+        <div
+          id="followupsData"
+          class="loading"
+        >
           Loading follow ups...
         </div>
 
@@ -321,9 +574,9 @@
           Recordings
         </h1>
 
-        <p>
+        <div class="empty">
           Call recordings will appear here after cloud calling is connected.
-        </p>
+        </div>
 
       </section>
 
@@ -335,13 +588,22 @@
 
   <script>
 
+    /*
+      GOOGLE APPS SCRIPT API
+    */
+
     const API_URL =
       "https://script.google.com/macros/s/AKfycbz9hOyKP5g3zgehyMXWLh_49PyKyv8GSYaCKaNIwGgxHsXx4EOgXbPazcKcqYn9weHI/exec";
 
 
+    /*
+      SECTION NAVIGATION
+    */
+
     function showSection(sectionId) {
 
-      document.querySelectorAll(".section")
+      document
+        .querySelectorAll(".section")
         .forEach(function(section) {
 
           section.classList.remove("active");
@@ -349,45 +611,318 @@
         });
 
 
-      document.getElementById(sectionId)
-        .classList.add("active");
+      const selected =
+        document.getElementById(sectionId);
+
+
+      if (selected) {
+
+        selected.classList.add("active");
+
+      }
 
 
       if (sectionId === "customers") {
+
         loadCustomers();
+
       }
+
 
       if (sectionId === "executives") {
+
         loadExecutives();
+
       }
+
 
       if (sectionId === "calls") {
+
         loadCalls();
+
       }
 
+
       if (sectionId === "followups") {
+
         loadFollowUps();
+
       }
 
     }
 
 
+    /*
+      API GET
+    */
+
     async function getData(action) {
 
       const response =
-        await fetch(API_URL + "?action=" + action);
+        await fetch(
+          API_URL + "?action=" + encodeURIComponent(action)
+        );
+
 
       return await response.json();
 
     }
 
 
+    /*
+      OPEN CUSTOMER FORM
+    */
+
+    function openCustomerForm() {
+
+      document
+        .getElementById("customerForm")
+        .style.display = "block";
+
+
+      document
+        .getElementById("customerName")
+        .focus();
+
+    }
+
+
+    /*
+      CLOSE CUSTOMER FORM
+    */
+
+    function closeCustomerForm() {
+
+      document
+        .getElementById("customerForm")
+        .style.display = "none";
+
+
+      document
+        .getElementById("customerMessage")
+        .innerHTML = "";
+
+    }
+
+
+    /*
+      SAVE CUSTOMER
+    */
+
+    async function saveCustomer() {
+
+      const name =
+        document
+          .getElementById("customerName")
+          .value
+          .trim();
+
+
+      const mobile =
+        document
+          .getElementById("customerMobile")
+          .value
+          .trim();
+
+
+      const city =
+        document
+          .getElementById("customerCity")
+          .value
+          .trim();
+
+
+      const status =
+        document
+          .getElementById("customerStatus")
+          .value;
+
+
+      const executive =
+        document
+          .getElementById("customerExecutive")
+          .value
+          .trim();
+
+
+      const notes =
+        document
+          .getElementById("customerNotes")
+          .value
+          .trim();
+
+
+      const message =
+        document.getElementById("customerMessage");
+
+
+      /*
+        VALIDATION
+      */
+
+      if (!name) {
+
+        message.innerHTML =
+          '<span style="color:red;">Customer name is required.</span>';
+
+        return;
+
+      }
+
+
+      if (!mobile) {
+
+        message.innerHTML =
+          '<span style="color:red;">Mobile number is required.</span>';
+
+        return;
+
+      }
+
+
+      /*
+        SHOW SAVING
+      */
+
+      message.innerHTML =
+        '<span style="color:#555;">Saving customer...</span>';
+
+
+      try {
+
+        /*
+          SEND DATA TO GOOGLE APPS SCRIPT
+        */
+
+        const response =
+          await fetch(API_URL, {
+
+            method: "POST",
+
+            body: JSON.stringify({
+
+              action: "addCustomer",
+
+              name: name,
+
+              mobile: mobile,
+
+              city: city,
+
+              status: status,
+
+              assignedExecutive: executive,
+
+              notes: notes
+
+            })
+
+          });
+
+
+        const result =
+          await response.json();
+
+
+        /*
+          SUCCESS
+        */
+
+        if (result.success) {
+
+          message.innerHTML =
+            '<span style="color:green;">Customer added successfully ✅</span>';
+
+
+          /*
+            CLEAR FORM
+          */
+
+          document
+            .getElementById("customerName")
+            .value = "";
+
+
+          document
+            .getElementById("customerMobile")
+            .value = "";
+
+
+          document
+            .getElementById("customerCity")
+            .value = "";
+
+
+          document
+            .getElementById("customerExecutive")
+            .value = "";
+
+
+          document
+            .getElementById("customerNotes")
+            .value = "";
+
+
+          document
+            .getElementById("customerStatus")
+            .value = "New";
+
+
+          /*
+            REFRESH DATA
+          */
+
+          await loadCustomers();
+
+          await loadDashboard();
+
+
+          /*
+            CLOSE FORM AFTER 1 SECOND
+          */
+
+          setTimeout(function() {
+
+            closeCustomerForm();
+
+          }, 1000);
+
+
+        } else {
+
+          message.innerHTML =
+            '<span style="color:red;">' +
+            escapeHtml(result.message || "Unable to save customer.") +
+            '</span>';
+
+        }
+
+
+      } catch (error) {
+
+        console.error(error);
+
+
+        message.innerHTML =
+          '<span style="color:red;">Connection error. Please try again.</span>';
+
+      }
+
+    }
+
+
+    /*
+      LOAD CUSTOMERS
+    */
+
     async function loadCustomers() {
 
       const box =
         document.getElementById("customersData");
 
-      box.innerHTML = "Loading customers...";
+
+      box.innerHTML =
+        "Loading customers...";
 
 
       try {
@@ -399,17 +934,19 @@
         if (!result.success) {
 
           box.innerHTML =
-            "Error: " + result.message;
+            '<div class="empty">Error: ' +
+            escapeHtml(result.message) +
+            '</div>';
 
           return;
 
         }
 
 
-        if (result.data.length === 0) {
+        if (!result.data || result.data.length === 0) {
 
           box.innerHTML =
-            "<p>No customers found.</p>";
+            '<div class="empty">No customers found.</div>';
 
           return;
 
@@ -419,20 +956,29 @@
         box.innerHTML =
           createTable(result.data);
 
+
       } catch (error) {
 
+        console.error(error);
+
+
         box.innerHTML =
-          "Connection error.";
+          '<div class="empty">Connection error.</div>';
 
       }
 
     }
 
 
+    /*
+      LOAD EXECUTIVES
+    */
+
     async function loadExecutives() {
 
       const box =
         document.getElementById("executivesData");
+
 
       box.innerHTML =
         "Loading executives...";
@@ -447,17 +993,19 @@
         if (!result.success) {
 
           box.innerHTML =
-            "Error: " + result.message;
+            '<div class="empty">Error: ' +
+            escapeHtml(result.message) +
+            '</div>';
 
           return;
 
         }
 
 
-        if (result.data.length === 0) {
+        if (!result.data || result.data.length === 0) {
 
           box.innerHTML =
-            "<p>No executives found.</p>";
+            '<div class="empty">No executives found.</div>';
 
           return;
 
@@ -467,20 +1015,29 @@
         box.innerHTML =
           createTable(result.data);
 
+
       } catch (error) {
 
+        console.error(error);
+
+
         box.innerHTML =
-          "Connection error.";
+          '<div class="empty">Connection error.</div>';
 
       }
 
     }
 
 
+    /*
+      LOAD CALL HISTORY
+    */
+
     async function loadCalls() {
 
       const box =
         document.getElementById("callsData");
+
 
       box.innerHTML =
         "Loading call history...";
@@ -495,17 +1052,19 @@
         if (!result.success) {
 
           box.innerHTML =
-            "Error: " + result.message;
+            '<div class="empty">Error: ' +
+            escapeHtml(result.message) +
+            '</div>';
 
           return;
 
         }
 
 
-        if (result.data.length === 0) {
+        if (!result.data || result.data.length === 0) {
 
           box.innerHTML =
-            "<p>No calls found.</p>";
+            '<div class="empty">No calls found.</div>';
 
           return;
 
@@ -515,20 +1074,29 @@
         box.innerHTML =
           createTable(result.data);
 
+
       } catch (error) {
 
+        console.error(error);
+
+
         box.innerHTML =
-          "Connection error.";
+          '<div class="empty">Connection error.</div>';
 
       }
 
     }
 
 
+    /*
+      LOAD FOLLOW UPS
+    */
+
     async function loadFollowUps() {
 
       const box =
         document.getElementById("followupsData");
+
 
       box.innerHTML =
         "Loading follow ups...";
@@ -543,17 +1111,19 @@
         if (!result.success) {
 
           box.innerHTML =
-            "Error: " + result.message;
+            '<div class="empty">Error: ' +
+            escapeHtml(result.message) +
+            '</div>';
 
           return;
 
         }
 
 
-        if (result.data.length === 0) {
+        if (!result.data || result.data.length === 0) {
 
           box.innerHTML =
-            "<p>No follow ups found.</p>";
+            '<div class="empty">No follow ups found.</div>';
 
           return;
 
@@ -563,20 +1133,30 @@
         box.innerHTML =
           createTable(result.data);
 
+
       } catch (error) {
 
+        console.error(error);
+
+
         box.innerHTML =
-          "Connection error.";
+          '<div class="empty">Connection error.</div>';
 
       }
 
     }
 
 
+    /*
+      CREATE TABLE
+    */
+
     function createTable(data) {
 
-      if (!data.length) {
-        return "<p>No data found.</p>";
+      if (!data || !data.length) {
+
+        return '<div class="empty">No data found.</div>';
+
       }
 
 
@@ -585,24 +1165,35 @@
 
 
       let html =
-        "<table><thead><tr>";
+        "<table>";
+
+
+      html +=
+        "<thead><tr>";
 
 
       headers.forEach(function(header) {
 
         html +=
-          "<th>" + escapeHtml(header) + "</th>";
+          "<th>" +
+          escapeHtml(header) +
+          "</th>";
 
       });
 
 
       html +=
-        "</tr></thead><tbody>";
+        "</tr></thead>";
+
+
+      html +=
+        "<tbody>";
 
 
       data.forEach(function(row) {
 
-        html += "<tr>";
+        html +=
+          "<tr>";
 
 
         headers.forEach(function(header) {
@@ -615,13 +1206,18 @@
         });
 
 
-        html += "</tr>";
+        html +=
+          "</tr>";
 
       });
 
 
       html +=
-        "</tbody></table>";
+        "</tbody>";
+
+
+      html +=
+        "</table>";
 
 
       return html;
@@ -629,10 +1225,19 @@
     }
 
 
+    /*
+      ESCAPE HTML
+    */
+
     function escapeHtml(value) {
 
-      if (value === null || value === undefined) {
+      if (
+        value === null ||
+        value === undefined
+      ) {
+
         return "";
+
       }
 
 
@@ -651,6 +1256,10 @@
     }
 
 
+    /*
+      DASHBOARD
+    */
+
     async function loadDashboard() {
 
       try {
@@ -658,11 +1267,14 @@
         const customers =
           await getData("customers");
 
+
         const executives =
           await getData("executives");
 
+
         const calls =
           await getData("calls");
+
 
         const followups =
           await getData("followups");
@@ -670,9 +1282,9 @@
 
         if (customers.success) {
 
-          document.getElementById(
-            "customerCount"
-          ).textContent =
+          document
+            .getElementById("customerCount")
+            .textContent =
             customers.data.length;
 
         }
@@ -680,9 +1292,9 @@
 
         if (executives.success) {
 
-          document.getElementById(
-            "executiveCount"
-          ).textContent =
+          document
+            .getElementById("executiveCount")
+            .textContent =
             executives.data.length;
 
         }
@@ -690,9 +1302,9 @@
 
         if (calls.success) {
 
-          document.getElementById(
-            "callCount"
-          ).textContent =
+          document
+            .getElementById("callCount")
+            .textContent =
             calls.data.length;
 
         }
@@ -700,21 +1312,26 @@
 
         if (followups.success) {
 
-          document.getElementById(
-            "followupCount"
-          ).textContent =
+          document
+            .getElementById("followupCount")
+            .textContent =
             followups.data.length;
 
         }
 
+
       } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
       }
 
     }
 
+
+    /*
+      START
+    */
 
     loadDashboard();
 
